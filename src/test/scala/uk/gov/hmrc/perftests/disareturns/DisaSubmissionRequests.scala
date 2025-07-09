@@ -26,7 +26,7 @@ import uk.gov.hmrc.perftests.disareturns.Util.SubPathGenerator.generateSubpath
 
 object DisaSubmissionRequests extends ServicesConfiguration {
 
-  val baseUrl: String = baseUrlFor("disa-submission-backend")
+  val baseUrl: String = baseUrlFor("disa-return")
   val route: String   = "/monthly-v3/"
 
   val sessionHeaders: Map[String, String] =
