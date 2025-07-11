@@ -22,13 +22,13 @@ import uk.gov.hmrc.perftests.disareturns.DisaSubmissionRequests.{ninoGenerator, 
 
 import scala.io.Source
 
-object FileUtils extends LazyLogging {
+object JsonDataGenerator extends LazyLogging {
 
-  def updateNdjsonWithNino(fileName: String): String = {
+  def generateSerializedNdjson(fileName: String): String = {
     val noOfJsons: Int = Option(System.getProperty("noOfJsons"))
       .map(_.toInt)
       .getOrElse(1)
-    val source         = duplicateJsonAsSource(fileName, noOfJsons)
+    val source         = generateSourceWithDuplicatedJsonLines(fileName, noOfJsons)
     val sb             = new StringBuilder
 
     try
@@ -58,7 +58,7 @@ object FileUtils extends LazyLogging {
     sb.toString()
   }
 
-  def duplicateJsonAsSource(fileName: String, copiesPerLine: Int): Source = {
+  def generateSourceWithDuplicatedJsonLines(fileName: String, copiesPerLine: Int): Source = {
     val source = Source.fromResource("data/" + fileName + ".txt")
     val lines  = source.getLines()
 

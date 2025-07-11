@@ -20,7 +20,7 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
-import uk.gov.hmrc.perftests.disareturns.Util.FileUtils.updateNdjsonWithNino
+import uk.gov.hmrc.perftests.disareturns.Util.JsonDataGenerator.generateSerializedNdjson
 import uk.gov.hmrc.perftests.disareturns.Util.RandomDataGenerator
 import uk.gov.hmrc.perftests.disareturns.Util.SubPathGenerator.generateSubpath
 
@@ -51,7 +51,7 @@ object DisaSubmissionRequests extends ServicesConfiguration {
       }
       .headers(sessionHeaders)
       .body(StringBody { session =>
-        val payload = updateNdjsonWithNino("Submission1")
+        val payload = generateSerializedNdjson("Submission1")
         payload
       })
       .check(status.is(200))
