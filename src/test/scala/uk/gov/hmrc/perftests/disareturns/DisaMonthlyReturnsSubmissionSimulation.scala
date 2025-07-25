@@ -18,6 +18,7 @@ package uk.gov.hmrc.perftests.disareturns
 
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 import uk.gov.hmrc.perftests.disareturns.AuthRequests.getSubmissionBearerToken
+import uk.gov.hmrc.perftests.disareturns.DisaMonthlyReturnsSubmissionRequests.submitMonthlyReport
 import uk.gov.hmrc.perftests.disareturns.InitialiseReturnsSubmissionRequests.{setReportingWindowsOpen, submitInitialiseReturnsSubmission}
 import uk.gov.hmrc.perftests.disareturns.PPNSServiceRequests.{createClientApplication, createNotificationBox, createSubscriptionFieldValues, createSubscriptionFields}
 
