@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.perftests.disareturns
+package uk.gov.hmrc.perftests.disareturns.Util
 
-import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
-import uk.gov.hmrc.perftests.disareturns.DisaSubmissionRequests._
+import play.api.libs.json._
 
-class DisaSubmissionSimulation extends PerformanceTestRunner {
+import scala.io.Source
 
-  setup("Disa-Monthly-Submission", "Disa Monthly submission") withRequests submitMonthlyReport
+object FileReader {
 
-  runSimulation()
+  def readLines(fileName: String): Seq[String] = {
+    val source = Source.fromResource("data/" + fileName + ".txt")
+    try
+      source.getLines().toSeq
+    finally
+      source.close()
+  }
 }

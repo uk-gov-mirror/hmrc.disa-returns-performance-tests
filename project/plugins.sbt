@@ -8,3 +8,5 @@ addSbtPlugin("uk.gov.hmrc" % "sbt-auto-build" % "3.24.0")
 addSbtPlugin("io.gatling" % "gatling-sbt" % "4.9.2")
 
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.5.2")
+
+addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.5.2")

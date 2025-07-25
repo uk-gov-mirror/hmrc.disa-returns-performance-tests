@@ -20,38 +20,26 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
-import uk.gov.hmrc.perftests.disareturns.Util.JsonDataGenerator.generateSerializedNdjson
-import uk.gov.hmrc.perftests.disareturns.Util.RandomDataGenerator
-import uk.gov.hmrc.perftests.disareturns.Util.SubPathGenerator.generateSubpath
+import uk.gov.hmrc.perftests.disareturns.Util.FileReader.readLines
+import uk.gov.hmrc.perftests.disareturns.Util.JsonGenerator.generateSerializedNdjson
 
-object DisaSubmissionRequests extends ServicesConfiguration {
+object DisaMonthlyReturnsSubmissionRequests extends ServicesConfiguration {
 
-  val baseUrl: String = baseUrlFor("disa-return")
-  val route: String   = "/monthly-v3/"
+  val disaReturnsBaseUrl: String = baseUrlFor("disa-returns")
+  val route: String              = "/monthly/"
 
   val sessionHeaders: Map[String, String] =
     Map(
       "Content-Type" -> "application/x-ndjson"
     )
 
-  val ninoGenerator: Iterator[Map[String, String]] =
-    Iterator.continually(Map("nino" -> RandomDataGenerator.nino()))
-
-  val stdCodeGenerator: Iterator[Map[String, String]] =
-    Iterator.continually(Map("stdCode" -> RandomDataGenerator.generateSTDCode()))
-
-  val oldCodeGenerator: Iterator[Map[String, String]] =
-    Iterator.continually(Map("oldCode" -> RandomDataGenerator.generateOLDCode()))
-
   val submitMonthlyReport: HttpRequestBuilder =
     http("Submit monthly report")
-      .post { session =>
-        val url = s"$baseUrl$route/" + generateSubpath()
-        url
-      }
+      .post(disaReturnsBaseUrl + route + "${isaManagerReference}" + "/" + "${returnId}")
       .headers(sessionHeaders)
       .body(StringBody { session =>
-        val payload = generateSerializedNdjson("Submission1")
+        val bulkMonthlyReturn = readLines("DisaMonthlyReturns")
+        val payload           = generateSerializedNdjson(bulkMonthlyReturn)
         payload
       })
       .check(status.is(200))
