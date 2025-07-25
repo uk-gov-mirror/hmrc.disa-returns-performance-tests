@@ -39,7 +39,7 @@ class DisaMonthlyReturnsSubmissionSimulation extends PerformanceTestRunner {
   setup(
     "Disa-Monthly-returns-Submission",
     "Disa Monthly returns submission"
-  ).withRequests(setReportingWindowsOpen, submitInitialiseReturnsSubmission, submitMonthlyReport)
+  ).withRequests(setReportingWindowsOpen, submitInitialiseReturnsSubmission)
 
   runSimulation()
 }
