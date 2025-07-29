@@ -18,7 +18,6 @@ package uk.gov.hmrc.perftests.disareturns
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import io.gatling.http.check.HttpCheck
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 
@@ -26,14 +25,10 @@ import scala.io.Source
 
 object AuthRequests extends ServicesConfiguration {
 
-  val authHost: String                   = baseUrlFor("auth-login-stub")
-  val ggSignInUrl                        = s"$authHost/application/session/login"
-  private val bearerTokenPattern: String = """Bearer\s([^,<]+)"""
-  val authRequestPayload: String         =
+  val authHost: String           = baseUrlFor("auth-login-stub")
+  val ggSignInUrl                = s"$authHost/application/session/login"
+  val authRequestPayload: String =
     Source.fromResource("data/AuthRequestPayload.json").getLines().mkString
-
-  def saveBearerToken: HttpCheck =
-    regex(_ => bearerTokenPattern).saveAs("bearerToken")
 
   def getSubmissionBearerToken: HttpRequestBuilder =
     http("Retrieve bearer token")

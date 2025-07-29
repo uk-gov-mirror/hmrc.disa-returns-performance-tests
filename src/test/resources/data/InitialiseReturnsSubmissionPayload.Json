@@ -1,5 +1,5 @@
 {
   "totalRecords": 1000,
   "submissionPeriod": "APR",
-  "taxYear": 2025
+  "taxYear": currentTaxYear
 }

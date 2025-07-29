@@ -28,19 +28,13 @@ object DisaMonthlyReturnsSubmissionRequests extends ServicesConfiguration {
   val disaReturnsBaseUrl: String = baseUrlFor("disa-returns")
   val route: String              = "/monthly/"
 
-  val sessionHeaders: Map[String, String] =
-    Map(
-      "Content-Type" -> "application/x-ndjson"
-    )
-
   val submitMonthlyReport: HttpRequestBuilder =
     http("Submit monthly report")
       .post(disaReturnsBaseUrl + route + "${isaManagerReference}" + "/" + "${returnId}")
-      .headers(sessionHeaders)
       .body(StringBody { session =>
         val bulkMonthlyReturn = readLines("DisaMonthlyReturns")
         val payload           = generateSerializedNdjson(bulkMonthlyReturn)
         payload
       })
-      .check(status.is(200))
+      .check(status.is(201))
 }

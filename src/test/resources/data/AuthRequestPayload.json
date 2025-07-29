@@ -1,27 +1,8 @@
 {
-  "clientId": "id-123232",
-  "authProvider": "PrivilegedApplication",
-  "applicationId": "app-1",
-  "applicationName": "App 1",
-  "enrolments": [
-    "read:individuals-matching",
-    "read:individuals-income",
-    "read:individuals-income-sa",
-    "read:individuals-income-sa-additional-information",
-    "read:individuals-income-sa-employments",
-    "read:individuals-income-sa-foreign",
-    "read:individuals-income-sa-interests-and-dividends",
-    "read:individuals-income-sa-partnerships",
-    "read:individuals-income-sa-pensions-and-state-benefits",
-    "read:individuals-income-sa-other",
-    "read:individuals-income-sa-self-employments",
-    "read:individuals-income-sa-source",
-    "read:individuals-income-sa-summary",
-    "read:individuals-income-sa-trusts",
-    "read:individuals-income-sa-uk-properties",
-    "read:individuals-income-paye",
-    "read:individuals-employments",
-    "read:individuals-employments-paye"
-  ],
+  "clientId": "disa-returns",
+  "authProvider": "disa-returns",
+  "applicationId": "disa-returns",
+  "applicationName": "disa-returns",
+  "enrolments": [],
   "ttl": 5000
 }

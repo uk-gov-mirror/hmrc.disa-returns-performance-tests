@@ -39,8 +39,8 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
        |""".stripMargin
 
   val initialiseReturnsSubmissionHeaders: Map[String, String] = Map(
-    "X-Client-ID"   -> "${clientId}",
-    "Authorization" -> "${bearerToken}"
+    "X-Client-ID"   -> "#{clientId}",
+    "Authorization" -> "#{bearerToken}"
   )
 
   val reportingWindowHeaders: Map[String, String] = Map(
@@ -58,10 +58,13 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
 
   val submitInitialiseReturnsSubmission: HttpRequestBuilder =
     http("Submit initialise returns submission")
-      .post(disaReturnsBaseUrl + disaReturnsPath + "${isaManagerReference}" + initialiseReturnsSubmissionApiRoute)
+      .post(disaReturnsBaseUrl + disaReturnsPath + "#{isaManagerReference}" + initialiseReturnsSubmissionApiRoute)
       .disableFollowRedirect
       .headers(initialiseReturnsSubmissionHeaders)
-      .body(StringBody(initialiseReturnsSubmissionPayload))
+      .body(StringBody { session =>
+        val currentYear = java.time.Year.now().getValue.toString
+        initialiseReturnsSubmissionPayload.replace("currentTaxYear", currentYear)
+      })
       .asJson
       .check(jsonPath("$.returnId").saveAs("returnId"))
       .check(status.is(200))

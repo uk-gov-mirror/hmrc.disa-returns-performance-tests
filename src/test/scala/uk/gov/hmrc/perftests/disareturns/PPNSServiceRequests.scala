@@ -30,7 +30,7 @@ object PPNSServiceRequests extends ServicesConfiguration {
   val thirdPartyApplicationPath: String      = "/application"
   val ppnsPath: String                       = "/box"
   val subscriptionPath                       = "/definition/context/disa-returns/version/1.0"
-  val subscriptionFieldValuesPath            = "/field/application/${clientId}/context/disa-returns/version/1.0"
+  val subscriptionFieldValuesPath            = "/field/application/clientId/context/disa-returns/version/1.0"
   val clientApplicationPayload: String       =
     Source.fromResource("data/ClientApplication.json").getLines().mkString
   val notificationBoxPayload: String         =
@@ -42,12 +42,12 @@ object PPNSServiceRequests extends ServicesConfiguration {
 
   val thirdpartyApplicationHadersMap: Map[String, String] = Map(
     "Content-Type"  -> "application/json",
-    "Authorization" -> "${bearerToken}"
+    "Authorization" -> "#{bearerToken}"
   )
 
   val notificationBoxHadersMap: Map[String, String] = Map(
     "Content-Type"  -> "application/json",
-    "Authorization" -> "${bearerToken}",
+    "Authorization" -> "#{bearerToken}",
     "User-Agent"    -> "disa-returns"
   )
 
@@ -86,7 +86,7 @@ object PPNSServiceRequests extends ServicesConfiguration {
 
   def createSubscriptionFieldValues: HttpRequestBuilder =
     http("Create Subscription Field values ")
-      .put(api_subscription_fields_host + subscriptionFieldValuesPath)
+      .put(api_subscription_fields_host + subscriptionFieldValuesPath.replace("clientId", "#{clientId}"))
       .headers(subscriptionFieldsHeadersMap)
       .body(StringBody(subscriptionFieldValuesPayload))
       .asJson
