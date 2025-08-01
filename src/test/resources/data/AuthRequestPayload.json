@@ -1,8 +1,0 @@
-{
-  "clientId": "disa-returns",
-  "authProvider": "disa-returns",
-  "applicationId": "disa-returns",
-  "applicationName": "disa-returns",
-  "enrolments": [],
-  "ttl": 5000
-}

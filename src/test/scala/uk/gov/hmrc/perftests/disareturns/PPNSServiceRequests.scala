@@ -21,8 +21,6 @@ import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 
-import scala.io.Source
-
 object PPNSServiceRequests extends ServicesConfiguration {
   val third_party_application_host: String   = baseUrlFor("third-party-application")
   val ppns_host: String                      = baseUrlFor("push-pull-notification")
@@ -31,14 +29,50 @@ object PPNSServiceRequests extends ServicesConfiguration {
   val ppnsPath: String                       = "/box"
   val subscriptionPath                       = "/definition/context/disa-returns/version/1.0"
   val subscriptionFieldValuesPath            = "/field/application/clientId/context/disa-returns/version/1.0"
-  val clientApplicationPayload: String       =
-    Source.fromResource("data/ClientApplication.json").getLines().mkString
-  val notificationBoxPayload: String         =
-    Source.fromResource("data/NotificationBox.json").getLines().mkString
-  val subscriptionFieldsPayload: String      =
-    Source.fromResource("data/SubscriptionFields.json").getLines().mkString
-  val subscriptionFieldValuesPayload: String =
-    Source.fromResource("data/SubscriptionFieldValues.json").getLines().mkString
+  val clientApplicationPayload: String       = """{
+                                                 |  "name": "TEST APP",
+                                                 |  "access": {
+                                                 |    "accessType": "STANDARD",
+                                                 |    "redirectUris": [],
+                                                 |    "overrides": []
+                                                 |  },
+                                                 |  "environment": "SANDBOX",
+                                                 |  "collaborators": [
+                                                 |    {
+                                                 |      "emailAddress": "test@test.com",
+                                                 |      "role": "ADMINISTRATOR",
+                                                 |      "userId": "dfdf62b2-5f07-29d9-9302-45cd2e5eb49b"
+                                                 |    }
+                                                 |  ]
+                                                 |}""".stripMargin
+  val notificationBoxPayload: String         = """{
+                                                |  "boxName": "obligations/declaration/isa/return##1.0##callbackUrl",
+                                                |  "clientId": "#{clientId}"
+                                                |}""".stripMargin
+  val subscriptionFieldsPayload: String      = """{
+                                                |  "fieldDefinitions": [
+                                                |    {
+                                                |      "name": "callbackUrl",
+                                                |      "shortDescription": "Notification URL",
+                                                |      "description": "What is your notification web address for us to send push notifications to?",
+                                                |      "type": "PPNSField",
+                                                |      "hint": "You must only give us a web address that you own. Your application will use this address to listen to notifications from HMRC.",
+                                                |      "validation": {
+                                                |        "errorMessage": "notificationUrl must be a valid https URL",
+                                                |        "rules": [
+                                                |          {
+                                                |            "UrlValidationRule": {}
+                                                |          }
+                                                |        ]
+                                                |      }
+                                                |    }
+                                                |  ]
+                                                |}""".stripMargin
+  val subscriptionFieldValuesPayload: String = """{
+                                                |  "fields": {
+                                                |    "callbackUrl": "http://localhost:10202/push-pull-notification-receiver-stub/notifications"
+                                                |  }
+                                                |}""".stripMargin
 
   val thirdpartyApplicationHadersMap: Map[String, String] = Map(
     "Content-Type"  -> "application/json",

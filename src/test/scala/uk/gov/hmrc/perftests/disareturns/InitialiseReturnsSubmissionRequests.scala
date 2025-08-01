@@ -19,24 +19,18 @@ package uk.gov.hmrc.perftests.disareturns
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
+import play.api.libs.json.Json
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
-
-import scala.io.Source
+import uk.gov.hmrc.perftests.disareturns.models.InitialiseReturnsSubmissionPayload
 
 object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
-  val disaReturnsStubHost: String                = baseUrlFor("disa-returns-stub")
-  val reportingWindowPath: String                = "/test-only/setup-obligation-window"
-  val disaReturnsBaseUrl: String                 = baseUrlFor("disa-returns")
-  val disaReturnsPath: String                    = "/monthly/"
-  val initialiseReturnsSubmissionApiRoute        = "/init"
-  val initialiseReturnsSubmissionPayload: String =
-    Source.fromResource("data/InitialiseReturnsSubmissionPayload.json").getLines().mkString
-  val reportingWindowPayload: String             =
-    s"""
-       |{
-       |  "reportingWindowOpen": true
-       |}
-       |""".stripMargin
+  val disaReturnsStubHost: String         = baseUrlFor("disa-returns-stub")
+  val reportingWindowPath: String         = "/test-only/setup-obligation-window"
+  val disaReturnsBaseUrl: String          = baseUrlFor("disa-returns")
+  val disaReturnsPath: String             = "/monthly/"
+  val initialiseReturnsSubmissionApiRoute = "/init"
+  val reportingWindowPayload: String      =
+    Json.stringify(Json.obj("reportingWindowOpen" -> true))
 
   val initialiseReturnsSubmissionHeaders: Map[String, String] = Map(
     "X-Client-ID"   -> "#{clientId}",
@@ -46,6 +40,9 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
   val reportingWindowHeaders: Map[String, String] = Map(
     "Content-Type" -> "application/json"
   )
+
+  def getInitialiseReturnsSubmissionPayload(currentTaxYear: Int): InitialiseReturnsSubmissionPayload =
+    InitialiseReturnsSubmissionPayload(100, "APR", currentTaxYear)
 
   val setReportingWindowsOpen: HttpRequestBuilder =
     http("Set reporting window as Open")
@@ -57,13 +54,14 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
       .silent
 
   val submitInitialiseReturnsSubmission: HttpRequestBuilder =
-    http("Submit initialise returns submission")
+    http("Submit 'initialise returns submission'")
       .post(disaReturnsBaseUrl + disaReturnsPath + "#{isaManagerReference}" + initialiseReturnsSubmissionApiRoute)
       .disableFollowRedirect
       .headers(initialiseReturnsSubmissionHeaders)
       .body(StringBody { session =>
-        val currentYear = java.time.Year.now().getValue.toString
-        initialiseReturnsSubmissionPayload.replace("currentTaxYear", currentYear)
+        val currentYear = java.time.Year.now().getValue.toInt
+        val payload     = getInitialiseReturnsSubmissionPayload(currentYear)
+        Json.stringify(Json.toJson(payload))
       })
       .asJson
       .check(jsonPath("$.returnId").saveAs("returnId"))

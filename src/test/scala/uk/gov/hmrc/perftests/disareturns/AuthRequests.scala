@@ -21,14 +21,18 @@ import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 
-import scala.io.Source
-
 object AuthRequests extends ServicesConfiguration {
 
   val authHost: String           = baseUrlFor("auth-login-stub")
   val ggSignInUrl                = s"$authHost/application/session/login"
-  val authRequestPayload: String =
-    Source.fromResource("data/AuthRequestPayload.json").getLines().mkString
+  val authRequestPayload: String = """{
+                                     |  "clientId": "disa-returns",
+                                     |  "authProvider": "disa-returns",
+                                     |  "applicationId": "disa-returns",
+                                     |  "applicationName": "disa-returns",
+                                     |  "enrolments": [],
+                                     |  "ttl": 5000
+                                     |}""".stripMargin
 
   def getSubmissionBearerToken: HttpRequestBuilder =
     http("Retrieve bearer token")
