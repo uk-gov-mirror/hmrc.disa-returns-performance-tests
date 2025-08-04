@@ -16,8 +16,6 @@
 
 package uk.gov.hmrc.perftests.disareturns.Util
 
-import play.api.libs.json._
-
 import scala.io.Source
 
 object FileReader {

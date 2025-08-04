@@ -29,8 +29,7 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
   val disaReturnsBaseUrl: String          = baseUrlFor("disa-returns")
   val disaReturnsPath: String             = "/monthly/"
   val initialiseReturnsSubmissionApiRoute = "/init"
-  val reportingWindowPayload: String      =
-    Json.stringify(Json.obj("reportingWindowOpen" -> true))
+  val reportingWindowPayload              = Json.obj("reportingWindowOpen" -> true)
 
   val initialiseReturnsSubmissionHeaders: Map[String, String] = Map(
     "X-Client-ID"   -> "#{clientId}",
@@ -48,8 +47,7 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
     http("Set reporting window as Open")
       .post(disaReturnsStubHost + reportingWindowPath)
       .headers(reportingWindowHeaders)
-      .body(StringBody(reportingWindowPayload))
-      .asJson
+      .body(StringBody(reportingWindowPayload.toString()))
       .check(status.is(204))
       .silent
 
@@ -61,9 +59,8 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
       .body(StringBody { session =>
         val currentYear = java.time.Year.now().getValue.toInt
         val payload     = getInitialiseReturnsSubmissionPayload(currentYear)
-        Json.stringify(Json.toJson(payload))
-      })
-      .asJson
+        Json.toJson(payload).toString()
+      }).asJson
       .check(jsonPath("$.returnId").saveAs("returnId"))
       .check(status.is(200))
 }
