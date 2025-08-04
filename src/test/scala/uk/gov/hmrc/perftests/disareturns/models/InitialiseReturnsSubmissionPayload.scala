@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.perftests.disareturns
+package uk.gov.hmrc.perftests.disareturns.models
 
-import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
-import uk.gov.hmrc.perftests.disareturns.DisaSubmissionRequests._
+import play.api.libs.json.{Json, OFormat}
 
-class DisaSubmissionSimulation extends PerformanceTestRunner {
+case class InitialiseReturnsSubmissionPayload(totalRecords: Int, submissionPeriod: String, taxYear: Int)
 
-  setup("Disa-Monthly-Submission", "Disa Monthly submission") withRequests submitMonthlyReport
-
-  runSimulation()
+object InitialiseReturnsSubmissionPayload {
+  implicit val format: OFormat[InitialiseReturnsSubmissionPayload] = Json.format[InitialiseReturnsSubmissionPayload]
 }

@@ -16,11 +16,15 @@
 
 package uk.gov.hmrc.perftests.disareturns.Util
 
-import scala.util.Random
+import scala.io.Source
 
-object SubPathGenerator {
-  def generateSubpath(): String = {
-    val randomNumber = Random.between(1000, 10000).toString
-    s"$randomNumber/submission/$randomNumber"
+object FileReader {
+
+  def readLines(fileName: String): Seq[String] = {
+    val source = Source.fromResource("data/" + fileName + ".txt")
+    try
+      source.getLines().toSeq
+    finally
+      source.close()
   }
 }
