@@ -154,16 +154,17 @@ object MockMonthlyReturnData extends NdjsonSupport {
   def validNdjsonTestData(): String = {
     def generatePayloadBlock(): Seq[JsValue] = {
       val lisaNewSubscriptionPayload    =
-        getLISANewSubscriptionPayload(RandomDataGenerator.nino(), RandomDataGenerator.generateSTDCode())
-      val lisaClosurePayload            = getLISAClosurePayload(RandomDataGenerator.nino(), RandomDataGenerator.generateSTDCode())
+        getLISANewSubscriptionPayload(RandomDataGenerator.nino(), RandomDataGenerator.generateAccountNumber())
+      val lisaClosurePayload            =
+        getLISAClosurePayload(RandomDataGenerator.nino(), RandomDataGenerator.generateAccountNumber())
       val lisaTransferAndClosurePayload =
-        getLISATransferAndClosurePayload(RandomDataGenerator.nino(), RandomDataGenerator.generateSTDCode())
+        getLISATransferAndClosurePayload(RandomDataGenerator.nino(), RandomDataGenerator.generateAccountNumber())
       val lisaTransferPayload           =
-        getLISATransferPayload(RandomDataGenerator.nino(), RandomDataGenerator.generateSTDCode())
+        getLISATransferPayload(RandomDataGenerator.nino(), RandomDataGenerator.generateAccountNumber())
       val sisaNewSubscriptionPayload    =
-        getSISANewSubscriptionPayload(RandomDataGenerator.nino(), RandomDataGenerator.generateSTDCode())
+        getSISANewSubscriptionPayload(RandomDataGenerator.nino(), RandomDataGenerator.generateAccountNumber())
       val sisaTransferPayload           =
-        getSISATransferPayload(RandomDataGenerator.nino(), RandomDataGenerator.generateSTDCode())
+        getSISATransferPayload(RandomDataGenerator.nino(), RandomDataGenerator.generateAccountNumber())
 
       Seq(
         Json.toJson(lisaNewSubscriptionPayload),
