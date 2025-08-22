@@ -28,13 +28,8 @@ object RandomDataGenerator {
     s"$letterPart$numberPart$lastLetterPart"
   }
 
-  def generateSTDCode(): String = {
+  def generateAccountNumber(): String = {
     val number = Random.nextInt(999999) + 1
     f"STD$number%06d"
-  }
-
-  def generateOLDCode(): String = {
-    val number = Random.nextInt(999999) + 1
-    f"OLD$number%06d"
   }
 }

@@ -18,7 +18,9 @@ package uk.gov.hmrc.perftests.disareturns.models
 
 import play.api.libs.json.{Json, OFormat}
 
-case class MonthlyReturnsPayload(
+case class LiftimeISAClosurePayload(
+  accountNumber: String,
+  nino: String,
   firstName: String,
   middleName: String,
   lastName: String,
@@ -28,13 +30,13 @@ case class MonthlyReturnsPayload(
   dateOfLastSubscription: String,
   totalCurrentYearSubscriptionsToDate: Double,
   marketValueOfAccount: Double,
-  amountTransferred: Double,
-  flexibleIsa: Boolean,
-  nino: String,
-  accountNumber: String,
-  accountNumberOfTransferringAccount: String
+  dateOfFirstSubscription: String,
+  closureDate: String,
+  reasonForClosure: String,
+  lisaQualifyingAddition: Double,
+  lisaBonusClaim: Double
 )
 
-object MonthlyReturnsPayload {
-  implicit val format: OFormat[MonthlyReturnsPayload] = Json.format[MonthlyReturnsPayload]
+object LiftimeISAClosurePayload {
+  implicit val format: OFormat[LiftimeISAClosurePayload] = Json.format[LiftimeISAClosurePayload]
 }
