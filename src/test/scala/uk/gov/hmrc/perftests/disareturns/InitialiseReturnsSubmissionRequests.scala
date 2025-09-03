@@ -16,20 +16,24 @@
 
 package uk.gov.hmrc.perftests.disareturns
 
+import com.typesafe.config.ConfigFactory
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.perftests.disareturns.models.InitialiseReturnsSubmissionPayload
 
 object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
   val disaReturnsStubHost: String         = baseUrlFor("disa-returns-stub")
-  val reportingWindowPath: String         = "/test-only/setup-obligation-window"
+  val reportingWindowPath: String         = "/test-only/setup-obligation-window/"
+  val obligationWindowPath: String        = "/etmp/open-obligation-status/"
   val disaReturnsBaseUrl: String          = baseUrlFor("disa-returns")
   val disaReturnsPath: String             = "/monthly/"
   val initialiseReturnsSubmissionApiRoute = "/init"
-  val reportingWindowPayload              = Json.obj("reportingWindowOpen" -> true)
+  val reportingWindowPayload: JsObject    = Json.obj("reportingWindowOpen" -> true)
+  private val config                      = ConfigFactory.load()
+  private val noOfJsons: Int              = config.getInt("saveMonthlyReturnLocally.no-of-json-lines")
 
   val initialiseReturnsSubmissionHeaders: Map[String, String] = Map(
     "X-Client-ID"   -> "#{clientId}",
@@ -42,7 +46,7 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
   )
 
   def getInitialiseReturnsSubmissionPayload(currentTaxYear: Int): InitialiseReturnsSubmissionPayload =
-    InitialiseReturnsSubmissionPayload(100, "APR", currentTaxYear)
+    InitialiseReturnsSubmissionPayload(noOfJsons * 6, "APR", currentTaxYear)
 
   val setReportingWindowsOpen: HttpRequestBuilder =
     http("Set reporting window as Open")
@@ -50,6 +54,12 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
       .headers(reportingWindowHeaders)
       .body(StringBody(reportingWindowPayload.toString()))
       .check(status.is(204))
+      .silent
+
+  val setObligationWindowsOpen: HttpRequestBuilder =
+    http("Set Obligation window as Open")
+      .post(disaReturnsStubHost + obligationWindowPath + "#{isaManagerReference}")
+      .check(status.is(200))
       .silent
 
   val submitInitialiseReturnsSubmission: HttpRequestBuilder =

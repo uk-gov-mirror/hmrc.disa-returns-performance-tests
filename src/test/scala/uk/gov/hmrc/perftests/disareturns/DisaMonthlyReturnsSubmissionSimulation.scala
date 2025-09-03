@@ -18,9 +18,10 @@ package uk.gov.hmrc.perftests.disareturns
 
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 import uk.gov.hmrc.perftests.disareturns.AuthRequests.getSubmissionBearerToken
+import uk.gov.hmrc.perftests.disareturns.CompleteReturnsServiceRequests.completeReturnsService
 import uk.gov.hmrc.perftests.disareturns.DisaMonthlyReturnsSubmissionRequests.submitMonthlyReport
-import uk.gov.hmrc.perftests.disareturns.InitialiseReturnsSubmissionRequests.{setReportingWindowsOpen, submitInitialiseReturnsSubmission}
-import uk.gov.hmrc.perftests.disareturns.PPNSServiceRequests.{createClientApplication, createNotificationBox, createSubscriptionFieldValues, createSubscriptionFields}
+import uk.gov.hmrc.perftests.disareturns.InitialiseReturnsSubmissionRequests.{setObligationWindowsOpen, setReportingWindowsOpen, submitInitialiseReturnsSubmission}
+import uk.gov.hmrc.perftests.disareturns.PPNSServiceRequests.{createClientApplication, createNotificationBox, createSubscriptionFields}
 
 class DisaMonthlyReturnsSubmissionSimulation extends PerformanceTestRunner {
 
@@ -33,12 +34,17 @@ class DisaMonthlyReturnsSubmissionSimulation extends PerformanceTestRunner {
     .withRequests(
       createClientApplication,
       createNotificationBox,
-      createSubscriptionFields,
-      createSubscriptionFieldValues
+      createSubscriptionFields
     )
 
   setup("Disa-Monthly-returns-Submission", "Disa Monthly returns submission")
-    .withRequests(setReportingWindowsOpen, submitInitialiseReturnsSubmission, submitMonthlyReport)
+    .withRequests(
+      setReportingWindowsOpen,
+      setObligationWindowsOpen,
+      submitInitialiseReturnsSubmission,
+      submitMonthlyReport,
+      completeReturnsService
+    )
 
   runSimulation()
 }
