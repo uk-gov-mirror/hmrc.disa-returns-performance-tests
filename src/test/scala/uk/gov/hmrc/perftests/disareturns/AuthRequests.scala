@@ -24,14 +24,26 @@ import uk.gov.hmrc.performance.conf.ServicesConfiguration
 object AuthRequests extends ServicesConfiguration {
 
   val authHost: String           = baseUrlFor("auth-login-stub")
-  val ggSignInUrl                = s"$authHost/application/session/login"
+  val ggSignInUrl                = s"$authHost/government-gateway/session/login"
   val authRequestPayload: String = """{
-                                     |  "clientId": "disa-returns",
-                                     |  "authProvider": "disa-returns",
-                                     |  "applicationId": "disa-returns",
-                                     |  "applicationName": "disa-returns",
-                                     |  "enrolments": [],
-                                     |  "ttl": 5000
+                                     |  "internalId": "Int-a7688cda-d983-472d-9971-ddca5f124641",
+                                     |  "externalId": "Ext-c4ebc935-ac7a-4cc2-950a-19e6fac91f2a",
+                                     |  "credentials": {
+                                     |    "providerId": "8124873381064832",
+                                     |    "providerType": "GovernmentGateway"
+                                     |  },
+                                     |  "credentialRole": "User",
+                                     |  "agentInformation": {},
+                                     |  "affinityGroup": "Organisation",
+                                     |  "credId": "1234567890",
+                                     |  "credentialStrength": "strong",
+                                     |  "enrolments": [
+                                     |    {
+                                     |      "key": "",
+                                     |      "identifiers": [],
+                                     |      "state": ""
+                                     |    }
+                                     |  ]
                                      |}""".stripMargin
 
   def getSubmissionBearerToken: HttpRequestBuilder =
@@ -40,6 +52,6 @@ object AuthRequests extends ServicesConfiguration {
       .body(StringBody(authRequestPayload))
       .asJson
       .check(status.is(201))
-      .check(header("authorization").saveAs("bearerToken"))
+      .check(header("authorization").transform(_.replaceAll(".*,(Bearer\\s+\\S+)", "$1")).saveAs("bearerToken"))
       .silent
 }
