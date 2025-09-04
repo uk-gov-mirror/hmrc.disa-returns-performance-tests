@@ -21,17 +21,17 @@ import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 
-object CompleteMonthlyReturnsServiceRequests extends ServicesConfiguration {
+object CompleteMonthlyReturnRequests extends ServicesConfiguration {
   val disaReturnsBaseUrl: String = baseUrlFor("disa-returns")
   val route: String              = "/monthly/"
 
-  val completeReturnsServiceRequestsHeaders: Map[String, String] = Map(
+  val completeMonthlyReturnRequestsHeaders: Map[String, String] = Map(
     "Authorization" -> "#{bearerToken}"
   )
 
-  val completeReturnsService: HttpRequestBuilder =
-    http("Submit 'complete return service' request")
+  val submitCompleteMonthlyReturn: HttpRequestBuilder =
+    http("Submit 'complete returns' request")
       .post(disaReturnsBaseUrl + route + "#{isaManagerReference}" + "/" + "#{returnId}" + "/complete")
-      .headers(completeReturnsServiceRequestsHeaders)
+      .headers(completeMonthlyReturnRequestsHeaders)
       .check(status.is(200))
 }
