@@ -27,7 +27,7 @@ import uk.gov.hmrc.perftests.disareturns.models.InitialiseReturnsSubmissionPaylo
 object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
   val disaReturnsStubHost: String         = baseUrlFor("disa-returns-stub")
   val reportingWindowPath: String         = "/test-only/setup-obligation-window/"
-  val obligationWindowPath: String        = "/etmp/open-obligation-status/"
+  val obligationStatusPath: String        = "/etmp/open-obligation-status/"
   val disaReturnsBaseUrl: String          = baseUrlFor("disa-returns")
   val disaReturnsPath: String             = "/monthly/"
   val initialiseReturnsSubmissionApiRoute = "/init"
@@ -56,9 +56,9 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
       .check(status.is(204))
       .silent
 
-  val setObligationWindowsOpen: HttpRequestBuilder =
-    http("Set Obligation window as Open")
-      .post(disaReturnsStubHost + obligationWindowPath + "#{isaManagerReference}")
+  val setObligationStatusOpen: HttpRequestBuilder =
+    http("Set Obligation status as Open")
+      .post(disaReturnsStubHost + obligationStatusPath + "#{isaManagerReference}")
       .check(status.is(200))
       .silent
 

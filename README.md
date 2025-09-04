@@ -1,4 +1,24 @@
-**This is a template README.md.  Be sure to update this with project specific content that describes your performance test project.**
+# disa-returns
+
+This application is responsible for receiving monthly and annual returns from ISA Managers to enable the fulfilment
+of their legal obligations, in effect from April 2027.
+
+This application acts as a protected zone service to support the frontend UI journey where ISA Managers can upload their
+returns using Upscan, as well as providing API platforms endpoints for ISA Managers who have chosen to integrate with
+the API instead.
+
+
+### Before running the tests
+
+This repository relies on having mongodb running locally. You can start it with:
+
+```bash
+# first check to see if mongo is already running
+docker ps | grep mongodb
+
+# if not, start it
+docker run --restart unless-stopped --name mongodb -p 27017:27017 -d percona/percona-server-mongodb:7.0 --replSet rs0
+```
 
 # disa-returns-performance-tests
 

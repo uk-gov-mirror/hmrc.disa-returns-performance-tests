@@ -39,9 +39,9 @@ object AuthRequests extends ServicesConfiguration {
                                      |  "credentialStrength": "strong",
                                      |  "enrolments": [
                                      |    {
-                                     |      "key": "HMRC-SS-ORG",
+                                     |      "key": "",
                                      |      "identifiers": [],
-                                     |      "state": "Activated"
+                                     |      "state": ""
                                      |    }
                                      |  ]
                                      |}""".stripMargin

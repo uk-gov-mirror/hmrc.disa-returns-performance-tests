@@ -21,12 +21,11 @@ import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 
-object CompleteReturnsServiceRequests extends ServicesConfiguration {
+object CompleteMonthlyReturnsServiceRequests extends ServicesConfiguration {
   val disaReturnsBaseUrl: String = baseUrlFor("disa-returns")
   val route: String              = "/monthly/"
 
   val completeReturnsServiceRequestsHeaders: Map[String, String] = Map(
-    "X-Client-ID"   -> "#{clientId}",
     "Authorization" -> "#{bearerToken}"
   )
 
