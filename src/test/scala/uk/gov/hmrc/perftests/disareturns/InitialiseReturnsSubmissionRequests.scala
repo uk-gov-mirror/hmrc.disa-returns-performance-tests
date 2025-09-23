@@ -26,8 +26,8 @@ import uk.gov.hmrc.perftests.disareturns.models.InitialiseReturnsSubmissionPaylo
 
 object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
   val disaReturnsStubHost: String         = baseUrlFor("disa-returns-stub")
-  val reportingWindowPath: String         = "/test-only/setup-obligation-window/"
-  val obligationStatusPath: String        = "/etmp/open-obligation-status/"
+  val reportingWindowPath: String         = "/test-only/etmp/reporting-window-state"
+  val obligationStatusPath: String        = "/test-only/etmp/open-obligation-status/"
   val disaReturnsBaseUrl: String          = baseUrlFor("disa-returns")
   val disaReturnsPath: String             = "/monthly/"
   val initialiseReturnsSubmissionApiRoute = "/init"
