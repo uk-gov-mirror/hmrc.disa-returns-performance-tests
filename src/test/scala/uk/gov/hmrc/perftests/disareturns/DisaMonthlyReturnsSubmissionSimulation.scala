@@ -43,7 +43,8 @@ class DisaMonthlyReturnsSubmissionSimulation extends PerformanceTestRunner {
       setObligationStatusOpen,
       submitInitialiseReturnsSubmission,
       submitMonthlyReport,
-      submitCompleteMonthlyReturn
+      submitCompleteMonthlyReturn,
+      setObligationStatusOpen
     )
 
   runSimulation()
