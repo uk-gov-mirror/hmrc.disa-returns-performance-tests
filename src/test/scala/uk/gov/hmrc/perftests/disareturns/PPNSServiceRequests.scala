@@ -96,7 +96,7 @@ object PPNSServiceRequests extends ServicesConfiguration {
       .body(StringBody(clientApplicationPayload))
       .asJson
       .check(status.is(201))
-      .check(jsonPath("$.details.clientId").saveAs("clientId"))
+      .check(jsonPath("$.details.token.clientId").saveAs("clientId"))
       .silent
 
   def createNotificationBox: HttpRequestBuilder =
