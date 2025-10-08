@@ -48,9 +48,14 @@ class DisaMonthlyReturnsSubmissionSimulation extends PerformanceTestRunner {
       setObligationStatusOpen
     )
 
-  setup("Reconciliation-Report-Journey", "Reconciliation Report Journey")
+  setup("Reconciliation-Report-Journey-1", "Reconciliation Report Journey through call back api")
     .withRequests(
       makeReturnSummaryCallback,
+      getReportingResultsSummary
+    )
+
+  setup("Reconciliation-Report-Journey-2", "Reconciliation Report Journey through test support api")
+    .withRequests(
       triggerReportReadyScenario,
       getReportingResultsSummary
     )
