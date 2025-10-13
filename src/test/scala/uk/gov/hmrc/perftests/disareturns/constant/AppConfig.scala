@@ -16,11 +16,27 @@
 
 package uk.gov.hmrc.perftests.disareturns.constant
 
-import uk.gov.hmrc.perftests.disareturns.ReconciliationReportService.baseUrlFor
+import uk.gov.hmrc.perftests.disareturns.AuthRequests.baseUrlFor
 
 object AppConfig {
-  val disaReturnsHost: String            = baseUrlFor("disa-returns")
-  val disaReturnsTestSupportHost: String = baseUrlFor("disa-returns-test-support-api")
-  val disaReturnsRoute: String           = "/monthly/"
-  val disaReturnsCallbackPath: String    = "/callback/monthly/"
+  val disaReturnsHost: String               = baseUrlFor("disa-returns")
+  val disaReturnsTestSupportHost: String    = baseUrlFor("disa-returns-test-support-api")
+  val disaReturnsRoute: String              = "/monthly/"
+  val disaReturnsCallbackPath: String       = "/callback/monthly/"
+  val authHost: String                      = baseUrlFor("auth-login-stub")
+  val ggSignInUrl                           = s"$authHost/government-gateway/session/login"
+  val disaReturnsStubHost: String           = baseUrlFor("disa-returns-stub")
+  val reportingWindowPath: String           = "/test-only/etmp/reporting-window-state"
+  val obligationStatusPath: String          = "/test-only/etmp/open-obligation-status/"
+  val initialiseReturnsSubmissionApiRoute   = "/init"
+  val third_party_application_host: String  = baseUrlFor("third-party-application")
+  val ppns_host: String                     = baseUrlFor("push-pull-notification")
+  val api_subscription_fields_host: String  = baseUrlFor("api-subscription-fields")
+  val thirdPartyApplicationPath: String     = "/application"
+  val ppnsPath: String                      = "/box"
+  val subscriptionPath                      = "/definition/context/disa-returns/version/1.0"
+  val subscriptionFieldValuesPath           = "/field/application/clientId/context/disa-returns/version/1.0"
+  val disaReturnsTestSupportBaseUrl: String = baseUrlFor("disa-returns-test-support-api")
+  val testSupportPath: String               = "/reconciliation"
+  val reportingResultsSummaryPath: String   = "/results/summary"
 }

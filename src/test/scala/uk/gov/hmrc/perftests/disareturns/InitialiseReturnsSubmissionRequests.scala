@@ -22,27 +22,14 @@ import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
-import uk.gov.hmrc.perftests.disareturns.constant.AppConfig.{disaReturnsHost, disaReturnsRoute}
+import uk.gov.hmrc.perftests.disareturns.constant.AppConfig._
+import uk.gov.hmrc.perftests.disareturns.constant.Headers.{initialiseReturnsSubmissionHeaders, reportingWindowHeaders}
 import uk.gov.hmrc.perftests.disareturns.models.InitialiseReturnsSubmissionPayload
 
 object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
-  val disaReturnsStubHost: String         = baseUrlFor("disa-returns-stub")
-  val reportingWindowPath: String         = "/test-only/etmp/reporting-window-state"
-  val obligationStatusPath: String        = "/test-only/etmp/open-obligation-status/"
-  val initialiseReturnsSubmissionApiRoute = "/init"
-  val reportingWindowPayload: JsObject    = Json.obj("reportingWindowOpen" -> true)
-  private val config                      = ConfigFactory.load()
-  private val noOfJsons: Int              = config.getInt("saveMonthlyReturnLocally.no-of-json-lines")
-
-  val initialiseReturnsSubmissionHeaders: Map[String, String] = Map(
-    "X-Client-ID"   -> "#{clientId}",
-    "Authorization" -> "#{bearerToken}",
-    "Content-Type"  -> "application/json"
-  )
-
-  val reportingWindowHeaders: Map[String, String] = Map(
-    "Content-Type" -> "application/json"
-  )
+  val reportingWindowPayload: JsObject = Json.obj("reportingWindowOpen" -> true)
+  private val config                   = ConfigFactory.load()
+  private val noOfJsons: Int           = config.getInt("saveMonthlyReturnLocally.no-of-json-lines")
 
   def getInitialiseReturnsSubmissionPayload(currentTaxYear: Int): InitialiseReturnsSubmissionPayload =
     InitialiseReturnsSubmissionPayload(noOfJsons * 6, "APR", currentTaxYear)

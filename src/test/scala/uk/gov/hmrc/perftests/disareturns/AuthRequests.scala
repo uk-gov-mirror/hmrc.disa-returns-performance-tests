@@ -20,11 +20,10 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
+import uk.gov.hmrc.perftests.disareturns.constant.AppConfig.ggSignInUrl
 
 object AuthRequests extends ServicesConfiguration {
 
-  val authHost: String           = baseUrlFor("auth-login-stub")
-  val ggSignInUrl                = s"$authHost/government-gateway/session/login"
   val authRequestPayload: String = """{
                                      |  "internalId": "Int-a7688cda-d983-472d-9971-ddca5f124641",
                                      |  "externalId": "Ext-c4ebc935-ac7a-4cc2-950a-19e6fac91f2a",

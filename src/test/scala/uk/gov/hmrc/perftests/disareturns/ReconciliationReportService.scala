@@ -20,32 +20,14 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
-import uk.gov.hmrc.perftests.disareturns.constant.AppConfig.{disaReturnsCallbackPath, disaReturnsHost, disaReturnsRoute}
+import uk.gov.hmrc.perftests.disareturns.constant.AppConfig._
+import uk.gov.hmrc.perftests.disareturns.constant.Headers.{headerOnlyWithBearerToken, headerWithBearerTokenAndContentTypeJson}
 
 object ReconciliationReportService extends ServicesConfiguration {
-
-  val disaReturnsTestSupportBaseUrl: String = baseUrlFor("disa-returns-test-support-api")
-  val testSupportPath: String               = "/reconciliation"
-  val reportingResultsSummaryPath: String   = "/results/summary"
-
-  val monthlyReturnsSubmissionHeaders: Map[String, String] = Map(
-    "X-Client-ID"   -> "#{clientId}",
-    "Authorization" -> "#{bearerToken}"
-  )
-
-  val testSupportHeaders: Map[String, String] = Map(
-    "Authorization" -> "#{bearerToken}",
-    "Content-Type"  -> "application/json"
-  )
-
-  val testSupportHeadersWithAuthOnly: Map[String, String] = Map(
-    "Authorization" -> "#{bearerToken}"
-  )
-
   val makeReturnSummaryCallback: HttpRequestBuilder =
     http("Make return summary callback")
       .post(disaReturnsHost + disaReturnsCallbackPath + "#{isaManagerReference}/2025-26/#{month}")
-      .headers(testSupportHeaders)
+      .headers(headerWithBearerTokenAndContentTypeJson)
       .body(StringBody { session =>
         val payload = s"""
                           |{
@@ -61,7 +43,7 @@ object ReconciliationReportService extends ServicesConfiguration {
       .post(
         disaReturnsTestSupportBaseUrl + "/#{isaManagerReference}/2025-26/#{month}" + testSupportPath
       )
-      .headers(testSupportHeaders)
+      .headers(headerWithBearerTokenAndContentTypeJson)
       .body(StringBody { session =>
         val payload = s"""
          {
@@ -78,6 +60,6 @@ object ReconciliationReportService extends ServicesConfiguration {
       .get(
         disaReturnsHost + disaReturnsRoute + "#{isaManagerReference}/2025-26/#{month}" + reportingResultsSummaryPath
       )
-      .headers(testSupportHeadersWithAuthOnly)
+      .headers(headerOnlyWithBearerToken)
       .check(status.is(200))
 }
