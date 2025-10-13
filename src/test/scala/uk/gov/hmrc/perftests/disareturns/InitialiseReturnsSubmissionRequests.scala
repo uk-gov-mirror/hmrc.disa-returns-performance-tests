@@ -36,7 +36,7 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
 
   val setReportingWindowsOpen: HttpRequestBuilder =
     http("Set reporting window as Open")
-      .post(disaReturnsStubHost + reportingWindowPath)
+      .post(s"$disaReturnsStubHost$reportingWindowPath")
       .headers(reportingWindowHeaders)
       .body(StringBody(reportingWindowPayload.toString()))
       .check(status.is(204))
@@ -44,13 +44,13 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
 
   val setObligationStatusOpen: HttpRequestBuilder =
     http("Set Obligation status as Open")
-      .post(disaReturnsStubHost + obligationStatusPath + "#{isaManagerReference}")
+      .post(s"$disaReturnsStubHost$obligationStatusPath#{isaManagerReference}")
       .check(status.is(200))
       .silent
 
   val submitInitialiseReturnsSubmission: HttpRequestBuilder =
     http("Submit 'initialise returns submission'")
-      .post(disaReturnsHost + disaReturnsRoute + "#{isaManagerReference}" + initialiseReturnsSubmissionApiRoute)
+      .post(s"$disaReturnsHost$disaReturnsRoute#{isaManagerReference}$initialiseReturnsSubmissionApiRoute")
       .disableFollowRedirect
       .headers(initialiseReturnsSubmissionHeaders)
       .body(StringBody { session =>

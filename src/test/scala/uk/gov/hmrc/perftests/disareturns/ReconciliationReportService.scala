@@ -26,7 +26,7 @@ import uk.gov.hmrc.perftests.disareturns.constant.Headers.{headerOnlyWithBearerT
 object ReconciliationReportService extends ServicesConfiguration {
   val makeReturnSummaryCallback: HttpRequestBuilder =
     http("Make return summary callback")
-      .post(disaReturnsHost + disaReturnsCallbackPath + "#{isaManagerReference}/2025-26/#{month}")
+      .post(s"$disaReturnsHost$disaReturnsCallbackPath#{isaManagerReference}/2025-26/#{month}")
       .headers(headerWithBearerTokenAndContentTypeJson)
       .body(StringBody { session =>
         val payload = s"""
@@ -40,9 +40,7 @@ object ReconciliationReportService extends ServicesConfiguration {
 
   val triggerReportReadyScenario: HttpRequestBuilder =
     http("Trigger report ready scenario")
-      .post(
-        disaReturnsTestSupportBaseUrl + "/#{isaManagerReference}/2025-26/#{month}" + testSupportPath
-      )
+      .post(s"$disaReturnsTestSupportBaseUrl/#{isaManagerReference}/2025-26/#{month}/$testSupportPath")
       .headers(headerWithBearerTokenAndContentTypeJson)
       .body(StringBody { session =>
         val payload = s"""
@@ -57,9 +55,7 @@ object ReconciliationReportService extends ServicesConfiguration {
 
   val getReportingResultsSummary: HttpRequestBuilder =
     http("Get Reporting Results Summary")
-      .get(
-        disaReturnsHost + disaReturnsRoute + "#{isaManagerReference}/2025-26/#{month}" + reportingResultsSummaryPath
-      )
+      .get(s"$disaReturnsHost$disaReturnsRoute#{isaManagerReference}/2025-26/#{month}$reportingResultsSummaryPath")
       .headers(headerOnlyWithBearerToken)
       .check(status.is(200))
 }

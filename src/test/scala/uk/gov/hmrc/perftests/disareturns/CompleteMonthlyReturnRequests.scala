@@ -27,7 +27,7 @@ object CompleteMonthlyReturnRequests extends ServicesConfiguration {
 
   val submitCompleteMonthlyReturn: HttpRequestBuilder =
     http("Submit 'complete returns' request")
-      .post(disaReturnsHost + disaReturnsRoute + "#{isaManagerReference}" + "/" + "#{returnId}" + "/complete")
+      .post(s"$disaReturnsHost$disaReturnsRoute#{isaManagerReference}/#{returnId}/complete")
       .headers(headerOnlyWithBearerToken)
       .check(status.is(200))
 }

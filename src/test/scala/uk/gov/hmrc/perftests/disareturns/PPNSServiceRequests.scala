@@ -21,7 +21,7 @@ import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.perftests.disareturns.constant.AppConfig._
-import uk.gov.hmrc.perftests.disareturns.constant.Headers.{notificationBoxHadersMap, subscriptionFieldsHeadersMap, headerWithBearerTokenAndContentTypeJson}
+import uk.gov.hmrc.perftests.disareturns.constant.Headers.{headerWithBearerTokenAndContentTypeJson, notificationBoxHadersMap, subscriptionFieldsHeadersMap}
 
 object PPNSServiceRequests extends ServicesConfiguration {
   val clientApplicationPayload: String       = """{
@@ -71,7 +71,7 @@ object PPNSServiceRequests extends ServicesConfiguration {
 
   def createClientApplication: HttpRequestBuilder =
     http("Create Client Application")
-      .post(third_party_application_host + thirdPartyApplicationPath)
+      .post(s"$third_party_application_host$thirdPartyApplicationPath")
       .headers(headerWithBearerTokenAndContentTypeJson)
       .body(StringBody(clientApplicationPayload))
       .asJson
@@ -81,7 +81,7 @@ object PPNSServiceRequests extends ServicesConfiguration {
 
   def createNotificationBox: HttpRequestBuilder =
     http("Create Notification Box")
-      .put(ppns_host + ppnsPath)
+      .put(s"$ppns_host$ppnsPath")
       .headers(notificationBoxHadersMap)
       .body(StringBody(notificationBoxPayload))
       .asJson
@@ -91,7 +91,7 @@ object PPNSServiceRequests extends ServicesConfiguration {
 
   def createSubscriptionFields: HttpRequestBuilder =
     http("Create Subscription Fields")
-      .put(api_subscription_fields_host + subscriptionPath)
+      .put(s"$api_subscription_fields_host$subscriptionPath")
       .headers(subscriptionFieldsHeadersMap)
       .body(StringBody(subscriptionFieldsPayload))
       .asJson
