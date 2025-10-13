@@ -22,14 +22,13 @@ import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
+import uk.gov.hmrc.perftests.disareturns.constant.AppConfig.{disaReturnsHost, disaReturnsRoute}
 import uk.gov.hmrc.perftests.disareturns.models.InitialiseReturnsSubmissionPayload
 
 object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
   val disaReturnsStubHost: String         = baseUrlFor("disa-returns-stub")
   val reportingWindowPath: String         = "/test-only/etmp/reporting-window-state"
   val obligationStatusPath: String        = "/test-only/etmp/open-obligation-status/"
-  val disaReturnsBaseUrl: String          = baseUrlFor("disa-returns")
-  val disaReturnsPath: String             = "/monthly/"
   val initialiseReturnsSubmissionApiRoute = "/init"
   val reportingWindowPayload: JsObject    = Json.obj("reportingWindowOpen" -> true)
   private val config                      = ConfigFactory.load()
@@ -64,7 +63,7 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
 
   val submitInitialiseReturnsSubmission: HttpRequestBuilder =
     http("Submit 'initialise returns submission'")
-      .post(disaReturnsBaseUrl + disaReturnsPath + "#{isaManagerReference}" + initialiseReturnsSubmissionApiRoute)
+      .post(disaReturnsHost + disaReturnsRoute + "#{isaManagerReference}" + initialiseReturnsSubmissionApiRoute)
       .disableFollowRedirect
       .headers(initialiseReturnsSubmissionHeaders)
       .body(StringBody { session =>

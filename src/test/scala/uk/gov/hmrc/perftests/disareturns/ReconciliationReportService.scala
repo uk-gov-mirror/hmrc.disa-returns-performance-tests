@@ -20,13 +20,11 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
+import uk.gov.hmrc.perftests.disareturns.constant.AppConfig.{disaReturnsCallbackPath, disaReturnsHost, disaReturnsRoute}
 
 object ReconciliationReportService extends ServicesConfiguration {
 
-  val disaReturnsBaseUrl: String            = baseUrlFor("disa-returns")
   val disaReturnsTestSupportBaseUrl: String = baseUrlFor("disa-returns-test-support-api")
-  val route: String                         = "/monthly/"
-  val callBackendPointPath: String          = "/callback/monthly/"
   val testSupportPath: String               = "/reconciliation"
   val reportingResultsSummaryPath: String   = "/results/summary"
 
@@ -46,7 +44,7 @@ object ReconciliationReportService extends ServicesConfiguration {
 
   val makeReturnSummaryCallback: HttpRequestBuilder =
     http("Make return summary callback")
-      .post(disaReturnsBaseUrl + callBackendPointPath + "#{isaManagerReference}" + "/2025-26/" + "/" + "#{month}")
+      .post(disaReturnsHost + disaReturnsCallbackPath + "#{isaManagerReference}/2025-26/#{month}")
       .headers(testSupportHeaders)
       .body(StringBody { session =>
         val payload = s"""
@@ -61,7 +59,7 @@ object ReconciliationReportService extends ServicesConfiguration {
   val triggerReportReadyScenario: HttpRequestBuilder =
     http("Trigger report ready scenario")
       .post(
-        disaReturnsTestSupportBaseUrl + "/" + "#{isaManagerReference}" + "/2025-26/" + "/" + "#{month}" + testSupportPath
+        disaReturnsTestSupportBaseUrl + "/#{isaManagerReference}/2025-26/#{month}" + testSupportPath
       )
       .headers(testSupportHeaders)
       .body(StringBody { session =>
@@ -78,7 +76,7 @@ object ReconciliationReportService extends ServicesConfiguration {
   val getReportingResultsSummary: HttpRequestBuilder =
     http("Get Reporting Results Summary")
       .get(
-        disaReturnsBaseUrl + route + "#{isaManagerReference}" + "/2025-26/" + "/" + "#{month}" + reportingResultsSummaryPath
+        disaReturnsHost + disaReturnsRoute + "#{isaManagerReference}/2025-26/#{month}" + reportingResultsSummaryPath
       )
       .headers(testSupportHeadersWithAuthOnly)
       .check(status.is(200))

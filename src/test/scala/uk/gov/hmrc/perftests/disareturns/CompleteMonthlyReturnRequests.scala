@@ -20,10 +20,9 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
+import uk.gov.hmrc.perftests.disareturns.constant.AppConfig.{disaReturnsHost, disaReturnsRoute}
 
 object CompleteMonthlyReturnRequests extends ServicesConfiguration {
-  val disaReturnsBaseUrl: String = baseUrlFor("disa-returns")
-  val route: String              = "/monthly/"
 
   val completeMonthlyReturnRequestsHeaders: Map[String, String] = Map(
     "Authorization" -> "#{bearerToken}"
@@ -31,7 +30,7 @@ object CompleteMonthlyReturnRequests extends ServicesConfiguration {
 
   val submitCompleteMonthlyReturn: HttpRequestBuilder =
     http("Submit 'complete returns' request")
-      .post(disaReturnsBaseUrl + route + "#{isaManagerReference}" + "/" + "#{returnId}" + "/complete")
+      .post(disaReturnsHost + disaReturnsRoute + "#{isaManagerReference}" + "/" + "#{returnId}" + "/complete")
       .headers(completeMonthlyReturnRequestsHeaders)
       .check(status.is(200))
 }
