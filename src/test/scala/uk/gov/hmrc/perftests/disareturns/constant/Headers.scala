@@ -21,7 +21,7 @@ object Headers {
     "Authorization" -> "#{bearerToken}"
   )
 
-  val monthlyReturnsSubmissionHeaders: Map[String, String] = Map(
+  val headerWithClientIdAndBearerToken: Map[String, String] = Map(
     "X-Client-ID"   -> "#{clientId}",
     "Authorization" -> "#{bearerToken}"
   )

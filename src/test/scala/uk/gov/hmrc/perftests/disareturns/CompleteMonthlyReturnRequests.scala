@@ -21,13 +21,13 @@ import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.perftests.disareturns.constant.AppConfig.{disaReturnsHost, disaReturnsRoute}
-import uk.gov.hmrc.perftests.disareturns.constant.Headers.headerOnlyWithBearerToken
+import uk.gov.hmrc.perftests.disareturns.constant.Headers.headerWithClientIdAndBearerToken
 
 object CompleteMonthlyReturnRequests extends ServicesConfiguration {
 
   val submitCompleteMonthlyReturn: HttpRequestBuilder =
-    http("Submit 'complete returns' request")
-      .post(s"$disaReturnsHost$disaReturnsRoute#{isaManagerReference}/#{returnId}/complete")
-      .headers(headerOnlyWithBearerToken)
+    http("Submit 'complete returns' declaration request")
+      .post(s"$disaReturnsHost$disaReturnsRoute#{isaManagerReference}/#{taxYear}/#{month}/declaration")
+      .headers(headerWithClientIdAndBearerToken)
       .check(status.is(200))
 }
