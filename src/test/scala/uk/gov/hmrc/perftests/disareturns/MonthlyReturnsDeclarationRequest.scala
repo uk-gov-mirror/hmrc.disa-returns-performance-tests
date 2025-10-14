@@ -23,7 +23,7 @@ import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.perftests.disareturns.constant.AppConfig.{disaReturnsHost, disaReturnsRoute}
 import uk.gov.hmrc.perftests.disareturns.constant.Headers.headerWithClientIdAndBearerToken
 
-object CompleteMonthlyReturnRequests extends ServicesConfiguration {
+object MonthlyReturnsDeclarationRequest extends ServicesConfiguration {
 
   val submitDeclaration: HttpRequestBuilder =
     http("Submit declaration request")
