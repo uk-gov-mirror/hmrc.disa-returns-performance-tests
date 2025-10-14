@@ -18,7 +18,7 @@ package uk.gov.hmrc.perftests.disareturns
 
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 import uk.gov.hmrc.perftests.disareturns.AuthRequests.getSubmissionBearerToken
-import uk.gov.hmrc.perftests.disareturns.CompleteMonthlyReturnRequests.submitCompleteMonthlyReturn
+import uk.gov.hmrc.perftests.disareturns.CompleteMonthlyReturnRequests.submitDeclaration
 import uk.gov.hmrc.perftests.disareturns.DisaMonthlyReturnsSubmissionRequests.submitMonthlyReport
 import uk.gov.hmrc.perftests.disareturns.InitialiseReturnsSubmissionRequests.{setObligationStatusOpen, setReportingWindowsOpen, submitInitialiseReturnsSubmission}
 import uk.gov.hmrc.perftests.disareturns.PPNSServiceRequests.{createClientApplication, createNotificationBox, createSubscriptionFields}
@@ -44,7 +44,7 @@ class DisaMonthlyReturnsSubmissionSimulation extends PerformanceTestRunner {
       setObligationStatusOpen,
       submitInitialiseReturnsSubmission,
       submitMonthlyReport,
-      submitCompleteMonthlyReturn,
+      submitDeclaration,
       setObligationStatusOpen
     )
 

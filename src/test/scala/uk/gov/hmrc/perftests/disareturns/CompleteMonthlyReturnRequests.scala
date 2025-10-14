@@ -25,8 +25,8 @@ import uk.gov.hmrc.perftests.disareturns.constant.Headers.headerWithClientIdAndB
 
 object CompleteMonthlyReturnRequests extends ServicesConfiguration {
 
-  val submitCompleteMonthlyReturn: HttpRequestBuilder =
-    http("Submit 'complete returns' declaration request")
+  val submitDeclaration: HttpRequestBuilder =
+    http("Submit declaration request")
       .post(s"$disaReturnsHost$disaReturnsRoute#{isaManagerReference}/#{taxYear}/#{month}/declaration")
       .headers(headerWithClientIdAndBearerToken)
       .check(status.is(200))
