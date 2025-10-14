@@ -22,6 +22,7 @@ import uk.gov.hmrc.perftests.disareturns.CompleteMonthlyReturnRequests.submitCom
 import uk.gov.hmrc.perftests.disareturns.DisaMonthlyReturnsSubmissionRequests.submitMonthlyReport
 import uk.gov.hmrc.perftests.disareturns.InitialiseReturnsSubmissionRequests.{setObligationStatusOpen, setReportingWindowsOpen, submitInitialiseReturnsSubmission}
 import uk.gov.hmrc.perftests.disareturns.PPNSServiceRequests.{createClientApplication, createNotificationBox, createSubscriptionFields}
+import uk.gov.hmrc.perftests.disareturns.ReconciliationReportService.{getReportingResultsSummary, makeReturnSummaryCallback, triggerReportReadyScenario}
 
 class DisaMonthlyReturnsSubmissionSimulation extends PerformanceTestRunner {
 
@@ -45,6 +46,18 @@ class DisaMonthlyReturnsSubmissionSimulation extends PerformanceTestRunner {
       submitMonthlyReport,
       submitCompleteMonthlyReturn,
       setObligationStatusOpen
+    )
+
+  setup("Reconciliation-Report-Journey-1", "Reconciliation Report Journey through call back api")
+    .withRequests(
+      makeReturnSummaryCallback,
+      getReportingResultsSummary
+    )
+
+  setup("Reconciliation-Report-Journey-2", "Reconciliation Report Journey through test support api")
+    .withRequests(
+      triggerReportReadyScenario,
+      getReportingResultsSummary
     )
 
   runSimulation()

@@ -20,15 +20,10 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
+import uk.gov.hmrc.perftests.disareturns.constant.AppConfig._
+import uk.gov.hmrc.perftests.disareturns.constant.Headers.{headerWithBearerTokenAndContentTypeJson, notificationBoxHadersMap, subscriptionFieldsHeadersMap}
 
 object PPNSServiceRequests extends ServicesConfiguration {
-  val third_party_application_host: String   = baseUrlFor("third-party-application")
-  val ppns_host: String                      = baseUrlFor("push-pull-notification")
-  val api_subscription_fields_host: String   = baseUrlFor("api-subscription-fields")
-  val thirdPartyApplicationPath: String      = "/application"
-  val ppnsPath: String                       = "/box"
-  val subscriptionPath                       = "/definition/context/disa-returns/version/1.0"
-  val subscriptionFieldValuesPath            = "/field/application/clientId/context/disa-returns/version/1.0"
   val clientApplicationPayload: String       = """{
                                                  |  "name": "TEST APP",
                                                  |  "access": {
@@ -74,25 +69,10 @@ object PPNSServiceRequests extends ServicesConfiguration {
                                                 |  }
                                                 |}""".stripMargin
 
-  val thirdpartyApplicationHadersMap: Map[String, String] = Map(
-    "Content-Type"  -> "application/json",
-    "Authorization" -> "#{bearerToken}"
-  )
-
-  val notificationBoxHadersMap: Map[String, String] = Map(
-    "Content-Type"  -> "application/json",
-    "Authorization" -> "#{bearerToken}",
-    "User-Agent"    -> "disa-returns"
-  )
-
-  val subscriptionFieldsHeadersMap: Map[String, String] = Map(
-    "Content-Type" -> "application/json"
-  )
-
   def createClientApplication: HttpRequestBuilder =
     http("Create Client Application")
-      .post(third_party_application_host + thirdPartyApplicationPath)
-      .headers(thirdpartyApplicationHadersMap)
+      .post(s"$third_party_application_host$thirdPartyApplicationPath")
+      .headers(headerWithBearerTokenAndContentTypeJson)
       .body(StringBody(clientApplicationPayload))
       .asJson
       .check(status.is(201))
@@ -101,7 +81,7 @@ object PPNSServiceRequests extends ServicesConfiguration {
 
   def createNotificationBox: HttpRequestBuilder =
     http("Create Notification Box")
-      .put(ppns_host + ppnsPath)
+      .put(s"$ppns_host$ppnsPath")
       .headers(notificationBoxHadersMap)
       .body(StringBody(notificationBoxPayload))
       .asJson
@@ -111,7 +91,7 @@ object PPNSServiceRequests extends ServicesConfiguration {
 
   def createSubscriptionFields: HttpRequestBuilder =
     http("Create Subscription Fields")
-      .put(api_subscription_fields_host + subscriptionPath)
+      .put(s"$api_subscription_fields_host$subscriptionPath")
       .headers(subscriptionFieldsHeadersMap)
       .body(StringBody(subscriptionFieldsPayload))
       .asJson

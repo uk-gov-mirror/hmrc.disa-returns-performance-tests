@@ -21,20 +21,13 @@ import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.perftests.disareturns.Util.MockMonthlyReturnData.validNdjsonTestData
+import uk.gov.hmrc.perftests.disareturns.constant.AppConfig.{disaReturnsHost, disaReturnsRoute}
+import uk.gov.hmrc.perftests.disareturns.constant.Headers.monthlyReturnsSubmissionHeaders
 
 object DisaMonthlyReturnsSubmissionRequests extends ServicesConfiguration {
-
-  val disaReturnsBaseUrl: String = baseUrlFor("disa-returns")
-  val route: String              = "/monthly/"
-
-  val monthlyReturnsSubmissionHeaders: Map[String, String] = Map(
-    "X-Client-ID"   -> "#{clientId}",
-    "Authorization" -> "#{bearerToken}"
-  )
-
   val submitMonthlyReport: HttpRequestBuilder =
     http("Submit monthly report")
-      .post(disaReturnsBaseUrl + route + "#{isaManagerReference}" + "/" + "#{returnId}")
+      .post(s"$disaReturnsHost$disaReturnsRoute#{isaManagerReference}/#{returnId}")
       .headers(monthlyReturnsSubmissionHeaders)
       .body(StringBody { session =>
         val payload = validNdjsonTestData()
