@@ -27,7 +27,6 @@ object AppConfig {
   val ggSignInUrl                           = s"$authHost/government-gateway/session/login"
   val disaReturnsStubHost: String           = baseUrlFor("disa-returns-stub")
   val reportingWindowPath: String           = "/test-only/etmp/reporting-window-state"
-  val obligationStatusPath: String          = "/test-only/etmp/open-obligation-status/"
   val initialiseReturnsSubmissionApiRoute   = "/init"
   val third_party_application_host: String  = baseUrlFor("third-party-application")
   val ppns_host: String                     = baseUrlFor("push-pull-notification")

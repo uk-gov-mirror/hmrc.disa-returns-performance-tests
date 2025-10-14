@@ -42,12 +42,6 @@ object InitialiseReturnsSubmissionRequests extends ServicesConfiguration {
       .check(status.is(204))
       .silent
 
-  val setObligationStatusOpen: HttpRequestBuilder =
-    http("Set Obligation status as Open")
-      .post(s"$disaReturnsStubHost$obligationStatusPath#{isaManagerReference}")
-      .check(status.is(200))
-      .silent
-
   val submitInitialiseReturnsSubmission: HttpRequestBuilder =
     http("Submit 'initialise returns submission'")
       .post(s"$disaReturnsHost$disaReturnsRoute#{isaManagerReference}$initialiseReturnsSubmissionApiRoute")
