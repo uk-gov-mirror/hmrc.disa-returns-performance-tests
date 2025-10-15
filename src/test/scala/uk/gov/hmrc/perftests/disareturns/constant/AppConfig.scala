@@ -34,8 +34,7 @@ object AppConfig {
   val thirdPartyApplicationPath: String     = "/application"
   val ppnsPath: String                      = "/box"
   val subscriptionPath                      = "/definition/context/obligation%2Fdeclaration%2Fisa%2Freturn/version/1.0"
-  val subscriptionFieldValuesPath           =
-    "/field/application/clientId/context/obligation%2Fdeclaration%2Fisa%2Freturn/version/1.0"
+  val subscriptionFieldValuesPath           = "/field/application/clientId/context/obligation%2Fdeclaration%2Fisa%2Freturn/version/1.0"
   val disaReturnsTestSupportBaseUrl: String = baseUrlFor("disa-returns-test-support-api")
   val testSupportPath: String               = "/reconciliation"
   val reportingResultsSummaryPath: String   = "/results/summary"
