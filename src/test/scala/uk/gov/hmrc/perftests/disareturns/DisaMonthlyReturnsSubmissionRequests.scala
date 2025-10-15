@@ -29,7 +29,7 @@ object DisaMonthlyReturnsSubmissionRequests extends ServicesConfiguration {
     http("Submit monthly report")
       .post(s"$disaReturnsHost$disaReturnsRoute#{isaManagerReference}/#{returnId}")
       .headers(headerWithClientIdAndBearerToken)
-      .body(StringBody { session =>
+      .body(StringBody { _ =>
         val payload = validNdjsonTestData()
         payload
       })

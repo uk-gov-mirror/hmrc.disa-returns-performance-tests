@@ -51,6 +51,6 @@ object AuthRequests extends ServicesConfiguration {
       .body(StringBody(authRequestPayload))
       .asJson
       .check(status.is(201))
-      .check(header("authorization").transform(_.replaceAll(".*,(Bearer\\s+\\S+)", "$1")).saveAs("bearerToken"))
+      .check(header(HttpHeaderNames.Authorization).saveAs("bearerToken"))
       .silent
 }
