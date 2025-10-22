@@ -26,12 +26,6 @@ object Headers {
     "Authorization" -> "#{bearerToken}"
   )
 
-  val initialiseReturnsSubmissionHeaders: Map[String, String] = Map(
-    "X-Client-ID"   -> "#{clientId}",
-    "Authorization" -> "#{bearerToken}",
-    "Content-Type"  -> "application/json"
-  )
-
   val reportingWindowHeaders: Map[String, String] = Map(
     "Content-Type" -> "application/json"
   )

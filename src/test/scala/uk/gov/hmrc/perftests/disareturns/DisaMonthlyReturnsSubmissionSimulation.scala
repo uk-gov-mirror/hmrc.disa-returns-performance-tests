@@ -19,10 +19,10 @@ package uk.gov.hmrc.perftests.disareturns
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 import uk.gov.hmrc.perftests.disareturns.AuthRequests.getSubmissionBearerToken
 import uk.gov.hmrc.perftests.disareturns.DisaMonthlyReturnsSubmissionRequests.submitMonthlyReport
-import uk.gov.hmrc.perftests.disareturns.InitialiseReturnsSubmissionRequests.{setReportingWindowsOpen, submitInitialiseReturnsSubmission}
 import uk.gov.hmrc.perftests.disareturns.MonthlyReturnsDeclarationRequest.submitDeclaration
 import uk.gov.hmrc.perftests.disareturns.PPNSServiceRequests.{createClientApplication, createNotificationBox, createSubscriptionFields}
 import uk.gov.hmrc.perftests.disareturns.ReconciliationReportService.{getReportingResultsSummary, makeReturnSummaryCallback, triggerReportReadyScenario}
+import uk.gov.hmrc.perftests.disareturns.ReportingWindowRequests.setReportingWindowsOpen
 
 class DisaMonthlyReturnsSubmissionSimulation extends PerformanceTestRunner {
 
@@ -41,7 +41,6 @@ class DisaMonthlyReturnsSubmissionSimulation extends PerformanceTestRunner {
   setup("Disa-Monthly-returns-Submission", "Disa Monthly returns submission")
     .withRequests(
       setReportingWindowsOpen,
-      submitInitialiseReturnsSubmission,
       submitMonthlyReport,
       submitDeclaration
     )
