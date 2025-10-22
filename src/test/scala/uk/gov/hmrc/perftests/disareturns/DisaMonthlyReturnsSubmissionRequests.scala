@@ -27,7 +27,7 @@ import uk.gov.hmrc.perftests.disareturns.constant.Headers.headerWithClientIdAndB
 object DisaMonthlyReturnsSubmissionRequests extends ServicesConfiguration {
   val submitMonthlyReport: HttpRequestBuilder =
     http("Submit monthly report")
-      .post(s"$disaReturnsHost$disaReturnsRoute#{isaManagerReference}/#{returnId}")
+      .post(s"$disaReturnsHost$disaReturnsRoute#{isaManagerReference}/#{taxYear}/#{month}")
       .headers(headerWithClientIdAndBearerToken)
       .body(StringBody { session =>
         val payload = validNdjsonTestData()
