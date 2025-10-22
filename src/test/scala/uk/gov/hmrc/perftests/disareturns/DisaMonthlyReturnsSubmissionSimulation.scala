@@ -20,10 +20,10 @@ import io.gatling.core.Predef.feed
 import io.gatling.core.structure.ChainBuilder
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 import uk.gov.hmrc.perftests.disareturns.AuthRequests.getSubmissionBearerToken
-import uk.gov.hmrc.perftests.disareturns.BaseRequests.setReportingWindowsOpen
 import uk.gov.hmrc.perftests.disareturns.DisaMonthlyReturnsSubmissionRequests.submitMonthlyReport
 import uk.gov.hmrc.perftests.disareturns.MonthlyReturnsDeclarationRequest.submitDeclaration
 import uk.gov.hmrc.perftests.disareturns.ReconciliationReportService.{getReportingResultsSummary, makeReturnSummaryCallback, triggerReportReadyScenario}
+import uk.gov.hmrc.perftests.disareturns.ReportingWindowRequests.setReportingWindowsOpen
 import uk.gov.hmrc.perftests.disareturns.Util.RandomDataGenerator.{generateRandomISAReference, getMonth, getTaxYear}
 
 class DisaMonthlyReturnsSubmissionSimulation extends PerformanceTestRunner {

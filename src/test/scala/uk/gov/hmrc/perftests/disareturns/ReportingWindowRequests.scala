@@ -24,7 +24,7 @@ import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.perftests.disareturns.constant.AppConfig._
 import uk.gov.hmrc.perftests.disareturns.constant.Headers.{headerOnlyWithBearerToken, headerWithClientIdForStagingTests, reportingWindowHeaders}
 
-object BaseRequests extends ServicesConfiguration {
+object ReportingWindowRequests extends ServicesConfiguration {
   val reportingWindowPayload: JsObject = Json.obj("reportingWindowOpen" -> true)
 
   val setReportingWindowsOpen: HttpRequestBuilder =
