@@ -17,20 +17,21 @@
 package uk.gov.hmrc.perftests.disareturns.constant
 
 object Headers {
+
   val headerOnlyWithBearerToken: Map[String, String] = Map(
     "Authorization" -> "#{bearerToken}"
   )
 
-  val headerWithClientIdAndBearerToken: Map[String, String] = Map(
-    "X-Client-ID"   -> "#{clientId}",
-    "Authorization" -> "#{bearerToken}"
-  )
-
-  val initialiseReturnsSubmissionHeaders: Map[String, String] = Map(
-    "X-Client-ID"   -> "#{clientId}",
-    "Authorization" -> "#{bearerToken}",
-    "Content-Type"  -> "application/json"
-  )
+  val headerWithClientIdForStagingTests: Map[String, String] = {
+    if (EnvConfig.isLocal)
+      Map(
+        "X-Client-ID" -> ""
+      )
+    else
+      Map(
+        "X-Client-ID" -> "#{stagingClientIDs}"
+      )
+   }
 
   val reportingWindowHeaders: Map[String, String] = Map(
     "Content-Type" -> "application/json"
@@ -50,4 +51,9 @@ object Headers {
   val subscriptionFieldsHeadersMap: Map[String, String] = Map(
     "Content-Type" -> "application/json"
   )
+
+}
+
+object EnvConfig {
+  def isLocal: Boolean = sys.props.get("runLocal").exists(_.equalsIgnoreCase("true"))
 }
