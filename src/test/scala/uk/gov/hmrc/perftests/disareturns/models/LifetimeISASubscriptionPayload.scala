@@ -18,25 +18,24 @@ package uk.gov.hmrc.perftests.disareturns.models
 
 import play.api.libs.json.{Json, OFormat}
 
-case class LifetimeISATransferPayload(
+case class LifetimeISASubscriptionPayload(
   accountNumber: String,
   nino: String,
   firstName: String,
   middleName: String,
   lastName: String,
   dateOfBirth: String,
-  isaType: String,
-  reportingATransfer: Boolean,
+  amountTransferredIn: Double,
+  amountTransferredOut: Double,
   dateOfLastSubscription: String,
   totalCurrentYearSubscriptionsToDate: Double,
   marketValueOfAccount: Double,
-  accountNumberOfTransferringAccount: String,
-  amountTransferred: Double,
+  isaType: String,
   dateOfFirstSubscription: String,
   lisaQualifyingAddition: Double,
   lisaBonusClaim: Double
 )
 
-object LifetimeISATransferPayload {
-  implicit val format: OFormat[LifetimeISATransferPayload] = Json.format[LifetimeISATransferPayload]
+object LifetimeISASubscriptionPayload {
+  implicit val format: OFormat[LifetimeISASubscriptionPayload] = Json.format[LifetimeISASubscriptionPayload]
 }
