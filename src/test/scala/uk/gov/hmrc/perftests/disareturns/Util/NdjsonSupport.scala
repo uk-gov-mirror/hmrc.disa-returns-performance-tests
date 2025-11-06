@@ -16,24 +16,12 @@
 
 package uk.gov.hmrc.perftests.disareturns.Util
 
-import com.typesafe.config.ConfigFactory
 import play.api.libs.json._
 
-import java.nio.charset.StandardCharsets
-import java.nio.file.{Files, Paths}
-
 trait NdjsonSupport {
-  private val config              = ConfigFactory.load()
-  private val saveToFile: Boolean = config.getBoolean("saveMonthlyReturnLocally.save-to-file")
-  private val outputPath: String  = config.getString("saveMonthlyReturnLocally.output-path")
 
-  /** Create NDJSON from a sequence of JsValues */
   def toNdjson(values: Seq[JsValue]): String = {
     val finalPayload = values.map(_.toString).mkString("\n") + "\n"
-    if (saveToFile) {
-      val path = Paths.get(outputPath)
-      Files.write(path, finalPayload.getBytes(StandardCharsets.UTF_8))
-    }
     finalPayload
   }
 }

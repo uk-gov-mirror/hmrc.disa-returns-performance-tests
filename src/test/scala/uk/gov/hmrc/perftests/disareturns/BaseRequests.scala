@@ -39,7 +39,7 @@ trait BaseRequests {
   val wsClient                      = StandaloneAhcWSClient()
   val noOfThirdPartyApplications    = 10
 
-  def testDataSetup(): Unit = try {
+  def testDataSetup(): Unit = {
     val extractedToken = getSubmissionBearerToken(wsClient)
     bearerToken = extractedToken
     setReportingWindowsOpen(wsClient)
