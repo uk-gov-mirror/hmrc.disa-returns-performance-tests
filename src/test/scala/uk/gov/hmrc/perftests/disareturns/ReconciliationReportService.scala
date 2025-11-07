@@ -19,11 +19,10 @@ package uk.gov.hmrc.perftests.disareturns
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
-import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.perftests.disareturns.constant.AppConfig._
 import uk.gov.hmrc.perftests.disareturns.constant.Headers.{headerOnlyWithBearerToken, headerWithBearerTokenAndContentTypeJson}
 
-object ReconciliationReportService extends ServicesConfiguration {
+object ReconciliationReportService {
   val makeReturnSummaryCallback: HttpRequestBuilder =
     http("Make return summary callback")
       .post(s"$disaReturnsHost$disaReturnsCallbackPath#{isaManagerReference}/2025-26/#{month}")

@@ -15,14 +15,10 @@
  */
 
 package uk.gov.hmrc.perftests.disareturns
-
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import org.slf4j.LoggerFactory
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
-import uk.gov.hmrc.perftests.disareturns.AuthRequests.getSubmissionBearerToken
-import uk.gov.hmrc.perftests.disareturns.ReportingWindowRequests.setReportingWindowsOpen
-import uk.gov.hmrc.perftests.disareturns.ThirdPartyApplicationRequests.{createClientApplication, createNotificationBox, createSubscriptionFields, deleteClientApplication}
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration.DurationInt
@@ -37,16 +33,20 @@ trait BaseRequests {
   implicit val mat: Materializer    = Materializer(system)
   implicit val ec: ExecutionContext = system.dispatcher
   val wsClient                      = StandaloneAhcWSClient()
-  val noOfThirdPartyApplications    = 10
+  val authRequests                  = new AuthRequests(wsClient)
+  val thirdPartyApplicationRequests = new ThirdPartyApplicationRequests(wsClient)
+  val reportingWindowRequests       = new ReportingWindowRequests(wsClient)
+
+  val noOfThirdPartyApplications = 10
 
   def testDataSetup(): Unit = {
-    val extractedToken = getSubmissionBearerToken(wsClient)
+    val extractedToken = authRequests.getSubmissionBearerToken.getOrElse("No token created")
     bearerToken = extractedToken
-    setReportingWindowsOpen(wsClient)
+    reportingWindowRequests.setReportingWindowsOpen()
     for (_ <- 1 to noOfThirdPartyApplications) {
-      val futureApp: Future[ClientApplication] = createClientApplication(wsClient, extractedToken)
+      val futureApp: Future[ClientApplication] = thirdPartyApplicationRequests.createClientApplication(extractedToken)
       val app: ClientApplication               = Await.result(futureApp, 10.seconds)
-      Await.result(createNotificationBox(wsClient, app.clientId), 5.seconds)
+      Await.result(thirdPartyApplicationRequests.createNotificationBox(app.clientId), 5.seconds)
       clientIds += app.clientId
       applicationIds += app.applicationId
     }
@@ -55,12 +55,12 @@ trait BaseRequests {
       * third party application clean up. This is TBD after the PR review.
       */
     logger.info(s"Application IDs created: ${applicationIds.mkString(", ")}")
-    Await.result(createSubscriptionFields(wsClient), 5.seconds)
+    Await.result(thirdPartyApplicationRequests.createSubscriptionFields(), 5.seconds)
   }
 
   def testDataCleanUp(): Unit = try
     for (i <- applicationIds.indices)
-      Await.result(deleteClientApplication(wsClient, bearerToken, applicationIds(i)), 5.seconds)
+      Await.result(thirdPartyApplicationRequests.deleteClientApplication(bearerToken, applicationIds(i)), 5.seconds)
   finally {
     wsClient.close()
     system.terminate()

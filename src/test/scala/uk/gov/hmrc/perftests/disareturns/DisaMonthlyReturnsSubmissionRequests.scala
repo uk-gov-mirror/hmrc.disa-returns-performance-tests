@@ -19,12 +19,11 @@ package uk.gov.hmrc.perftests.disareturns
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
-import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.perftests.disareturns.Util.MockMonthlyReturnData.validNdjsonTestData
 import uk.gov.hmrc.perftests.disareturns.constant.AppConfig.{disaReturnsHost, disaReturnsRoute}
 import uk.gov.hmrc.perftests.disareturns.constant.Headers.headerWithClientIdAndBearerToken
 
-object DisaMonthlyReturnsSubmissionRequests extends ServicesConfiguration {
+object DisaMonthlyReturnsSubmissionRequests {
   val submitMonthlyReport: HttpRequestBuilder =
     http("Submit monthly report")
       .post(s"$disaReturnsHost$disaReturnsRoute#{isaManagerReference}/#{taxYear}/#{month}")

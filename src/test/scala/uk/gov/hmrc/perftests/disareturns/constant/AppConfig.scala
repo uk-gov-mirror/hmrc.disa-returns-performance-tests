@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.perftests.disareturns.constant
 
-import uk.gov.hmrc.perftests.disareturns.AuthRequests.baseUrlFor
+import uk.gov.hmrc.performance.conf.ServicesConfiguration
 
-object AppConfig {
+object AppConfig extends ServicesConfiguration {
   val disaReturnsHost: String               = baseUrlFor("disa-returns")
   val disaReturnsTestSupportHost: String    = baseUrlFor("disa-returns-test-support-api")
   val disaReturnsRoute: String              = "/monthly/"

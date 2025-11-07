@@ -24,8 +24,8 @@ import uk.gov.hmrc.perftests.disareturns.constant.Headers.{notificationBoxHaders
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-object ThirdPartyApplicationRequests {
-  var cookies: String                   = _
+class ThirdPartyApplicationRequests(ws: StandaloneAhcWSClient) {
+
   val clientApplicationPayload: String  = """{
                                                  |  "name": "TEST APP",
                                                  |  "access": {
@@ -66,9 +66,9 @@ object ThirdPartyApplicationRequests {
                                                  |  ]
                                                  |}""".stripMargin
 
-  def createClientApplication(wsClient: StandaloneAhcWSClient, token: String): Future[ClientApplication] = {
+  def createClientApplication(token: String): Future[ClientApplication] = {
     val url = s"$third_party_application_host$thirdPartyApplicationPath"
-    wsClient
+    ws
       .url(url)
       .addHttpHeaders(
         "Authorization" -> token,
@@ -88,53 +88,44 @@ object ThirdPartyApplicationRequests {
       }
   }
 
-  def createNotificationBox(wsClient: StandaloneAhcWSClient, clientID: String): Future[Unit] = {
-    val url = s"$ppns_host$ppnsPath"
+  def createNotificationBox(clientID: String): Future[Unit] = {
+    val url         = s"$ppns_host$ppnsPath"
     val requestBody = notificationBoxPayload.replace("CLIENT_ID", clientID)
-    wsClient
+    ws
       .url(url)
       .withHttpHeaders(
         notificationBoxHadersMap.toSeq: _*
       )
       .put(requestBody)
       .map { response =>
-        if (response.status != 201) {
-          throw new RuntimeException(
-            s"Failed2 to create notification box. Status: ${response.status}, Body: ${response.body}"
-          )
-        }
+        if (response.status != 201) Right(())
+        else Left(s"Failed to create notification box. status ${response.status}, body: ${response.body}")
       }
   }
 
-  def createSubscriptionFields(wsClient: StandaloneAhcWSClient): Future[Unit] = {
+  def createSubscriptionFields(): Future[Unit] = {
     val url = s"$api_subscription_fields_host$subscriptionPath"
-    wsClient
+    ws
       .url(url)
       .addHttpHeaders(subscriptionFieldsHeadersMap.toSeq: _*)
       .put(subscriptionFieldsPayload)
       .map { response =>
-        if (response.status != 201 && response.status != 200) {
-          throw new RuntimeException(
-            s"Failed to create the subscription fields. Status: ${response.status}, Body: ${response.body}"
-          )
-        }
+        if (response.status != 201 && response.status != 200) Right(())
+        else Left(s"Failed to create the subscription fields. status ${response.status}, body: ${response.body}")
       }
   }
 
-  def deleteClientApplication(wsClient: StandaloneAhcWSClient, token: String, clientID: String): Future[Unit] = {
+  def deleteClientApplication(token: String, clientID: String): Future[Unit] = {
     val url = s"$third_party_application_host$thirdPartyApplicationPath/$clientID/delete"
-    wsClient
+    ws
       .url(url)
       .addHttpHeaders(
         "Authorization" -> token
       )
       .post("")
       .map { response =>
-        if (response.status != 204) {
-          throw new RuntimeException(
-            s"Failed to delete the client application. Status: ${response.status}, Body: ${response.body}"
-          )
-        }
+        if (response.status != 204) Right(())
+        else Left(s"Failed to delete the thrird party application. Status ${response.status}, body: ${response.body}")
       }
   }
 }
